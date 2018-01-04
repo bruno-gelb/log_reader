@@ -3,14 +3,14 @@
 
 
 def gather_unique_ips(input, output):
-    unique_ips = set()  # todo maybe not the best choice, think about it
+    unique_ips = set()
 
     with open(input, 'r') as f:
-        pass
-        # todo read unique_ips
+        for line in f:
+            unique_ips.add(line.strip())
 
     with open(output, 'w') as f:
-        pass  # todo write unique_ips to output.txt
+        f.writelines('%s\n' % ip for ip in unique_ips)
 
 
 if __name__ == "__main__":
