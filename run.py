@@ -13,6 +13,7 @@ def gather_unique_ips(input_file, output_file, worker_number):
     start = timer()
     unique_ips = set()
 
+    # todo add offset work here (based on worker_number)
     with open(input_file, 'r') as f:
         for line in f:
             unique_ips.add(line.strip())
