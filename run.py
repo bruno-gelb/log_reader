@@ -1,10 +1,12 @@
-# todo measure processing time (timeit, clockit?.. consider multiprocessing)
-# todo handle real log format (probably via regex for IPs)
+# todo consider multiprocessing in measuring time
+# todo handle real logfile format (probably via regex for IPs)
 
 import os
 from timeit import default_timer as timer
 
 from utils import sizeof_fmt
+
+PROCESSES_NUMBER = 2  # later set it up to 8
 
 
 def gather_unique_ips(input_file, output_file):
