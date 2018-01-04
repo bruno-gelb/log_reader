@@ -1,3 +1,5 @@
 .idea
-data/big_sample.txt
 __pycache__/
+
+data/big_sample.txt
+output.txt
