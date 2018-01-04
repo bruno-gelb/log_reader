@@ -2,6 +2,15 @@ import os
 from random import randrange
 
 
+def sizeof_fmt(num, suffix='B'):
+    # stackoverflow.com/a/1094933
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        if abs(num) < 1024.0:
+            return "%3.1f %s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f %s%s" % (num, 'Yi', suffix)
+
+
 def generate_ip():
     # codingwithcody.com/2010/07/03/generate-random-ip-with-python/
     not_valid = [10, 127, 169, 172, 192]
