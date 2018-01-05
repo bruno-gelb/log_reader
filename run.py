@@ -15,6 +15,8 @@ def gather_unique_ips(input_file, worker_number):
 
     offset = worker_number - 1
 
+    gathered_ips = []
+
     with open(input_file, 'r') as f:
         for i, line in enumerate(f):
             if offset == PROCESSES_NUMBER - 1:
@@ -25,8 +27,12 @@ def gather_unique_ips(input_file, worker_number):
 
             ip = line.strip()  # todo handle real logfile format (probably via regex for IPs)
 
-            # todo this part is taking all the time. Try to optimize it
-            r.set(ip, '')
+            gathered_ips.append(ip)
+
+    pipe = r.pipeline()
+    for i in range(0, len(gathered_ips)):
+        pipe.set(gathered_ips[i], '')
+    pipe.execute()
 
     worker_end = timer()
 
