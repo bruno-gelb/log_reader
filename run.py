@@ -2,7 +2,7 @@ import os
 from multiprocessing import Process, Manager
 from timeit import default_timer as timer
 
-from utils import sizeof_fmt, generate_big_sample
+from utils import sizeof_fmt
 
 PROCESSES_NUMBER = 4
 manager = Manager()
