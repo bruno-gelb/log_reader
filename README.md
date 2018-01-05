@@ -8,7 +8,7 @@ The code must be written in Python.
 
 ### stack
 
-python 3, no requirements
+python 3, create venv based on `requirements.txt`
 
 
 ### how to install & use
