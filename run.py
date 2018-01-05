@@ -4,18 +4,7 @@ from timeit import default_timer as timer
 
 from utils import sizeof_fmt
 
-PROCESSES_NUMBER = 3  # later set it up to 4-8
-
-
-# 2-worker case:
-# 1, 3, 5, 7, 9
-# 2, 4, 6, 8
-
-
-# 3-worker case:
-# 1, 4, 7
-# 2, 5, 8
-# 3, 6, 9
+PROCESSES_NUMBER = 4  # later set it up to 4-8
 
 
 def gather_unique_ips(input_file, output_file, worker_number):
@@ -26,11 +15,11 @@ def gather_unique_ips(input_file, output_file, worker_number):
 
     with open(input_file, 'r') as f:
         for i, line in enumerate(f):
-            line_number = i + 1
-            if line_number <= offset:
+            if offset == PROCESSES_NUMBER - 1:
+                offset = 0
+            else:
+                offset += 1
                 continue
-
-            # todo handle line skipping on offset
 
             ip = line.strip()  # todo handle real logfile format (probably via regex for IPs)
             print('Worker #{}, line {}'.format(worker_number, ip))
