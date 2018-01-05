@@ -24,8 +24,8 @@ def generate_ip():
     return ip
 
 
-def generate_big_sample(lines_amount):
-    filename = os.path.join(os.getcwd(), 'data', 'big_sample.txt')
+def generate_sample(lines_amount, filename):
+    filename = os.path.join(os.getcwd(), 'data', filename)
     with open(filename, 'w') as f:
         for i in range(lines_amount):
             # todo write in bulk instead. Speed is okay tho since it's one-time generation

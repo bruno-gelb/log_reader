@@ -8,7 +8,7 @@ The code must be written in Python.
 
 ### stack
 
-python3
+python 3, no requirements
 
 
 ### how to install & use

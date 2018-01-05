@@ -1,15 +1,16 @@
 import os
-from multiprocessing import Process
+from multiprocessing import Process, Manager
 from timeit import default_timer as timer
 
-from utils import sizeof_fmt
+from utils import sizeof_fmt, generate_big_sample
 
-PROCESSES_NUMBER = 4  # later set it up to 4-8
+PROCESSES_NUMBER = 4
+manager = Manager()
+shared_dict = manager.dict()
 
 
-def gather_unique_ips(input_file, output_file, worker_number):
-    start = timer()
-    unique_ips = set()
+def gather_unique_ips(input_file, worker_number):
+    worker_start = timer()
 
     offset = worker_number - 1
 
@@ -22,31 +23,41 @@ def gather_unique_ips(input_file, output_file, worker_number):
                 continue
 
             ip = line.strip()  # todo handle real logfile format (probably via regex for IPs)
-            print('Worker #{}, line {}'.format(worker_number, ip))
-            unique_ips.add(ip)
+            try:
+                shared_dict[ip] = ''
+            except Exception:  # todo what exception
+                pass
 
-    with open(output_file, 'w') as f:
-        f.writelines('%s\n' % ip for ip in unique_ips)
-    end = timer()
+    worker_end = timer()
 
-    # todo find out the better way to measure time in multiprocessing context =/
-    print('Worker #{} finished in {:.2f} sec'.format(worker_number, end - start))
+    print('Worker #{} finished in {:.2f} sec.'.format(worker_number, worker_end - worker_start))
 
 
 if __name__ == "__main__":
-    # generate_big_sample(10 ** 7)
+    # generate_sample(10 ** 7, 'huge_sample.txt')
 
-    input_file = 'data/small_sample_2.txt'
-    output_file = 'output.txt'
+    input_file = 'data/huge_sample.txt'
 
-    print('Text file ({0}) handling started..'.format(
+    print('Text file ({0}) handling started ..'.format(
         sizeof_fmt(os.path.getsize(input_file)))
     )
 
     jobs = []
+    start = timer()
 
     for i in range(PROCESSES_NUMBER):
         p = Process(target=gather_unique_ips,
-                    args=(input_file, output_file, i + 1,))
+                    args=(input_file, i + 1,))
         jobs.append(p)
         p.start()
+
+    for job in jobs:
+        job.join()
+
+    end = timer()
+
+    print('All workers finished in {:.2f} sec.'.format(end - start))
+    print('{} unique IPs found.'.format(len(shared_dict)))
+
+    with open('output.txt', 'w') as f:
+        f.writelines('%s\n' % ip for ip in shared_dict._getvalue())
