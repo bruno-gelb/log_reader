@@ -24,7 +24,6 @@ def gather_unique_ips(input_file, output_file, worker_number):
 
     offset = worker_number - 1
 
-    # todo add offset work here (based on worker_number)
     with open(input_file, 'r') as f:
         for i, line in enumerate(f):
             line_number = i + 1
