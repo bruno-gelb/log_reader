@@ -9,6 +9,7 @@ manager = Manager()
 shared_dict = manager.dict()
 
 
+# @profile()
 def gather_unique_ips(input_file, worker_number):
     worker_start = timer()
 
